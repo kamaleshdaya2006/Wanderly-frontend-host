@@ -89,7 +89,7 @@ function loadProfile() {
 
 /* Load foods */
 function loadFoods() {
-    fetch("http://localhost:5000/foods")
+    fetch("https://wanderly-backend-4hhs.onrender.com/foods")
         .then(res => {
             if (!res.ok) throw new Error("Failed to load foods");
             return res.json();
@@ -134,7 +134,7 @@ function loadFoods() {
         });
 }
 function loadReviews(entityType, entityId, containerId) {
-    fetch(`http://localhost:5000/reviews?entity_type=${entityType}&entity_id=${entityId}`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/reviews?entity_type=${entityType}&entity_id=${entityId}`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById(containerId);
