@@ -220,7 +220,7 @@ function loadPlace(placeId) {
    Load Foods
 ---------------------------- */
 function loadFoods(placeId) {
-    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/foods`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/foods/${placeId}`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("foodContainer");
@@ -244,7 +244,7 @@ function loadFoods(placeId) {
    Load Souvenirs
 ---------------------------- */
 function loadSouvenirs(placeId) {
-    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/souvenirs`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/souvenirs/${placeId}`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("souvenirContainer");
