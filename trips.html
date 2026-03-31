@@ -136,7 +136,7 @@ function loadTrips() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) return;
 
-    fetch(`http://localhost:5000/trips/${user.user_id}`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/${user.user_id}`)
         .then(res => res.json())
         .then(trips => {
 
@@ -190,7 +190,7 @@ function loadTrips() {
 // Load places inside trip days
 // -----------------------------
 function loadTripPlaces(tripId) {
-    fetch(`http://localhost:5000/trip_places/${tripId}`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trip_places/${tripId}`)
         .then(res => res.json())
         .then(days => {
 
@@ -222,7 +222,7 @@ function loadTripPlaces(tripId) {
         });
 }
 function removePlace(tpId) {
-    fetch(`http://localhost:5000/trip_places/${tpId}`, {
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trip_places/${tpId}`, {
         method: "DELETE"
     })
     .then(() => loadTrips());
@@ -231,7 +231,7 @@ function movePlace(tpId) {
     const newDay = prompt("Move to which day?");
     if (!newDay) return;
 
-    fetch(`http://localhost:5000/trip_places/${tpId}`, {
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trip_places/${tpId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -253,7 +253,7 @@ function createTrip() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    fetch("http://localhost:5000/trips", {
+    fetch("https://wanderly-backend-4hhs.onrender.com/trips", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -272,7 +272,7 @@ function createTrip() {
 // Delete trip
 // -----------------------------
 function deleteTrip(tripId) {
-    fetch(`http://localhost:5000/trips/${tripId}`, {
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/${tripId}`, {
         method: "DELETE"
     })
     .then(() => loadTrips());
@@ -284,7 +284,7 @@ function editTrip(tripId, currentDays) {
     const newStart = prompt("Enter new start date (YYYY-MM-DD):");
     if (!newStart) return;
 
-    fetch(`http://localhost:5000/trips/${tripId}`, {
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/${tripId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -327,7 +327,7 @@ function searchPlaces(input, tripId, dayNumber) {
         return;
     }
 
-    fetch(`http://localhost:5000/search_places?q=${query}`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/search_places?q=${query}`)
         .then(res => res.json())
         .then(data => {
             resultsBox.innerHTML = data.map(place => `
@@ -362,7 +362,7 @@ function closePreview() {
 // Confirm place
 // -----------------------------
 function confirmPlace() {
-    fetch("http://localhost:5000/trip_places", {
+    fetch("https://wanderly-backend-4hhs.onrender.com/trip_places", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
