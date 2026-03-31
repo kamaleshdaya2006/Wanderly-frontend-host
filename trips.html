@@ -317,7 +317,6 @@ function renderDay(tripId, dayNumber) {
 
 // -----------------------------
 // Search places
-// -----------------------------
 function searchPlaces(input, tripId, dayNumber) {
     const query = input.value;
     const resultsBox = input.nextElementSibling;
@@ -327,8 +326,11 @@ function searchPlaces(input, tripId, dayNumber) {
         return;
     }
 
-    fetch(`https://wanderly-backend-4hhs.onrender.com/search_places?q=${query}`)
-        .then(res => res.json())
+    fetch(`https://wanderly-backend-4hhs.onrender.com/places/search?q=${query}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Search API failed");
+            return res.json();
+        })
         .then(data => {
             resultsBox.innerHTML = data.map(place => `
                 <div class="search-item"
@@ -336,7 +338,8 @@ function searchPlaces(input, tripId, dayNumber) {
                     ${place.name}
                 </div>
             `).join("");
-        });
+        })
+        .catch(err => console.error("Search error:", err));
 }
 
 // -----------------------------
