@@ -205,7 +205,7 @@ function loadPlace() {
         return;
     }
 
-    fetch(`http://localhost:5000/places/${placeId}`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}`)
         .then(res => res.json())
         .then(data => {
             console.log("Full response:", data);
@@ -299,7 +299,7 @@ function loadPlace() {
    Load Foods
 ---------------------------- */
 function loadFoods(placeId) {
-    fetch(`http://localhost:5000/places/${placeId}/foods`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/foods`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("foodContainer");
@@ -322,7 +322,7 @@ function loadFoods(placeId) {
    Load Souvenirs
 ---------------------------- */
 function loadSouvenirs(placeId) {
-    fetch(`http://localhost:5000/places/${placeId}/souvenirs`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/souvenirs`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("souvenirContainer");
@@ -345,7 +345,7 @@ function loadSouvenirs(placeId) {
    Load Activities
 ---------------------------- */
 function loadActivities(placeId) {
-    fetch(`http://localhost:5000/places/${placeId}/activities`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/activities`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("activityContainer");
@@ -367,7 +367,7 @@ function loadActivities(placeId) {
    Load Reviews
 ---------------------------- */
 function loadReviews(placeId) {
-    fetch(`http://localhost:5000/places/${placeId}/reviews`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/reviews`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("reviewContainer");
