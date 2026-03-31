@@ -318,6 +318,12 @@ function previewPlace(id, name, desc, img, tripId, dayNumber) {
 
 // -----------------------------
 function confirmPlace() {
+
+    if (!selectedPlace.tripId || !selectedPlace.id) {
+        alert("No place selected");
+        return;
+    }
+
     fetch("https://wanderly-backend-4hhs.onrender.com/trips/trip_places", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -328,9 +334,15 @@ function confirmPlace() {
             order_in_day: 1
         })
     })
-    .then(res => {
-        if (!res.ok) throw new Error("Add place failed");
-        return res.json();
+    .then(async res => {
+        const text = await res.text();
+
+        if (!res.ok) {
+            console.error("Server error:", text);
+            throw new Error("Add place failed");
+        }
+
+        return text ? JSON.parse(text) : {};
     })
     .then(() => {
         closePreview();
@@ -338,7 +350,6 @@ function confirmPlace() {
     })
     .catch(err => console.error("Add place error:", err));
 }
-
 // -----------------------------
 function openTripForm() {
     document.getElementById("tripOverlay").classList.add("active");
