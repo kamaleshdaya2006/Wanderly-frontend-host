@@ -268,8 +268,11 @@ function loadSouvenirs(placeId) {
    Load Activities
 ---------------------------- */
 function loadActivities(placeId) {
-    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/activities`)
-        .then(res => res.json())
+    fetch(`https://wanderly-backend-4hhs.onrender.com/activities/${placeId}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Activities API failed");
+            return res.json();
+        })
         .then(data => {
             const container = document.getElementById("activityContainer");
             container.innerHTML = "";
@@ -291,7 +294,7 @@ function loadActivities(placeId) {
    Load Reviews
 ---------------------------- */
 function loadReviews(placeId) {
-    fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}/reviews`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/reviews/${placeId}`)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("reviewContainer");
