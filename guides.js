@@ -63,7 +63,7 @@ function loadProfile() {
 /* ================= LOAD GUIDES ================= */
 
 function loadGuides() {
-    fetch("http://localhost:5000/guides")
+    fetch("https://wanderly-backend-4hhs.onrender.com/guides")
         .then(res => {
             if (!res.ok) throw new Error("Failed to load guides");
             return res.json();
@@ -76,7 +76,7 @@ function loadGuides() {
                 card.className = "guide-card";
 
                 const imgSrc = g.image
-                    ? `http://localhost:5000/static/uploads/${g.image}`
+                    ? `https://wanderly-backend-4hhs.onrender.com/static/uploads/${g.image}`
                     : "https://via.placeholder.com/100";
 
                 card.innerHTML = `
@@ -163,7 +163,7 @@ function submitGuide() {
         formData.append("image", g_image.files[0]);
     }
 
-    fetch("http://localhost:5000/guides", {
+    fetch("https://wanderly-backend-4hhs.onrender.com/guides", {
         method: "POST",
         body: formData
     })
@@ -218,7 +218,7 @@ function confirmBooking() {
         return;
     }
 
-    fetch("http://localhost:5000/guide-bookings", {
+    fetch("https://wanderly-backend-4hhs.onrender.com/guide-bookings", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -243,7 +243,7 @@ function confirmBooking() {
 /* ================= REVIEWS ================= */
 
 function loadReviews(entityType, entityId, containerId) {
-    fetch(`http://localhost:5000/reviews?entity_type=${entityType}&entity_id=${entityId}`)
+    fetch(`https://wanderly-backend-4hhs.onrender.com/reviews?entity_type=${entityType}&entity_id=${entityId}`)
         .then(res => {
             if (!res.ok) throw new Error("Failed to fetch reviews");
             return res.json();
