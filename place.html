@@ -175,7 +175,7 @@ function closeProfile() {
 }
 
 /* ---------------------------
-   Load Profile Data
+   Load Profile
 ---------------------------- */
 function loadProfile() {
     const userData = localStorage.getItem("user");
@@ -193,105 +193,26 @@ function loadProfile() {
 }
 
 /* ---------------------------
-   Load Place Data
+   Load Place (ONLY place data)
 ---------------------------- */
-function loadPlace() {
-    const params = new URLSearchParams(window.location.search);
-    const placeId = params.get("id");
-
-    if (!placeId) {
-        document.getElementById("placeDescription").textContent =
-            "No place selected.";
-        return;
-    }
-
+function loadPlace(placeId) {
     fetch(`https://wanderly-backend-4hhs.onrender.com/places/${placeId}`)
         .then(res => res.json())
         .then(data => {
-            console.log("Full response:", data);
-
             const place = data.place;
 
-            // -------------------------
-            // Basic place info
-            // -------------------------
+            if (!place) throw new Error("Place not found");
+
             document.getElementById("placeTitle").textContent = place.name;
             document.getElementById("placeHeading").textContent = place.name;
             document.getElementById("placeDescription").textContent = place.description;
             document.getElementById("placeImage").src = place.image;
 
-            // Map
             document.getElementById("placeMap").src =
                 `https://www.google.com/maps?q=${place.name}&output=embed`;
-
-            // -------------------------
-            // Foods
-            // -------------------------
-            const foodContainer = document.getElementById("foodContainer");
-            foodContainer.innerHTML = "";
-            data.foods.forEach(food => {
-                foodContainer.innerHTML += `
-                    <div class="food-card">
-                        <h3>${food.name}</h3>
-                        <div class="rating">⭐ ${food.rating || ""}</div>
-                        <p>${food.description}</p>
-                        <strong>${food.shop_name || ""}</strong>
-                    </div>
-                `;
-            });
-
-            // -------------------------
-            // Souvenirs
-            // -------------------------
-            const souvenirContainer = document.getElementById("souvenirContainer");
-            souvenirContainer.innerHTML = "";
-            data.souvenirs.forEach(item => {
-                souvenirContainer.innerHTML += `
-                    <div class="souvenir-card">
-                        <h3>${item.name}</h3>
-                        <div class="rating">⭐ ${item.rating || ""}</div>
-                        <p>${item.description}</p>
-                        <strong>${item.shop_name || ""}</strong>
-                    </div>
-                `;
-            });
-
-            // -------------------------
-            // Activities
-            // -------------------------
-            const activityContainer = document.getElementById("activityContainer");
-            activityContainer.innerHTML = "";
-            data.activities.forEach(act => {
-    activityContainer.innerHTML += `
-        <div class="activity-card">
-            <i class="fa-solid ${act.icon || 'fa-star'}"></i>
-            <h3>${act.name}</h3>
-            <p>${act.description}</p>
-        </div>
-    `;
-});
-
-            // -------------------------
-            // Reviews
-            // -------------------------
-            const reviewContainer = document.getElementById("reviewContainer");
-            reviewContainer.innerHTML = "";
-            data.reviews.forEach(review => {
-                reviewContainer.innerHTML += `
-                    <div class="review-card">
-                        <div class="review-header">
-                            <h3>Visitor</h3>
-                            <span class="rating">⭐ ${review.rating}</span>
-                        </div>
-                        <p>${review.text}</p>
-                    </div>
-                `;
-            });
         })
         .catch(err => {
-            console.error("Error loading place:", err);
-            document.getElementById("placeDescription").textContent =
-                "Failed to load place.";
+            console.error("Place error:", err);
         });
 }
 
@@ -315,7 +236,8 @@ function loadFoods(placeId) {
                     </div>
                 `;
             });
-        });
+        })
+        .catch(err => console.error("Foods error:", err));
 }
 
 /* ---------------------------
@@ -338,7 +260,8 @@ function loadSouvenirs(placeId) {
                     </div>
                 `;
             });
-        });
+        })
+        .catch(err => console.error("Souvenirs error:", err));
 }
 
 /* ---------------------------
@@ -354,13 +277,14 @@ function loadActivities(placeId) {
             data.forEach(act => {
                 container.innerHTML += `
                     <div class="activity-card">
-                        <i class="${act.icon || 'fa-solid fa-star'}"></i>
+                        <i class="fa-solid ${act.icon || 'fa-star'}"></i>
                         <h3>${act.name}</h3>
                         <p>${act.description}</p>
                     </div>
                 `;
             });
-        });
+        })
+        .catch(err => console.error("Activities error:", err));
 }
 
 /* ---------------------------
@@ -384,15 +308,31 @@ function loadReviews(placeId) {
                     </div>
                 `;
             });
-        });
+        })
+        .catch(err => console.error("Reviews error:", err));
 }
 
 /* ---------------------------
-   On Page Load
+   MAIN ENTRY (THIS FIXES EVERYTHING)
 ---------------------------- */
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     loadProfile();
-    loadPlace();
+
+    const params = new URLSearchParams(window.location.search);
+    const placeId = params.get("id");
+
+    if (!placeId) {
+        document.getElementById("placeDescription").textContent =
+            "No place selected.";
+        return;
+    }
+
+    // CALL EVERYTHING CORRECTLY
+    loadPlace(placeId);
+    loadFoods(placeId);
+    loadSouvenirs(placeId);
+    loadActivities(placeId);
+    loadReviews(placeId);
 });
 </script>
 
