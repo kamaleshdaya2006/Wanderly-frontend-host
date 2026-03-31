@@ -1,0 +1,245 @@
+/* ===== GLOBAL ===== */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* NAV */
+.home-container, .profile-container {
+    position: fixed;
+    top: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+.home-container { left: 20px; }
+.profile-container { right: 20px; }
+
+.home-icon, .profile-icon {
+    font-size: 36px;
+    color: #22d3ee;
+}
+
+/* TITLE */
+.title-block {
+    text-align: center;
+    padding: 60px 20px 20px;
+}
+
+.title-text {
+    font-size: 3rem;
+    background: linear-gradient(90deg, #22d3ee, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* BUTTON */
+.add-guide-btn {
+    background: linear-gradient(135deg, #22d3ee, #a78bfa);
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* GUIDE SECTION */
+.guide-section {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.guide-scroll {
+    width: 100%;
+    max-width: 900px;
+    height: 70vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 🔥 SCROLLBAR STYLE */
+.guide-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.guide-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(#22d3ee, #a78bfa);
+    border-radius: 10px;
+}
+
+/* CARD */
+.guide-card {
+    display: flex;
+    gap: 20px;
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(167,139,250,0.2);
+    transition: 0.3s;
+}
+
+.guide-card:hover {
+    box-shadow: 0 0 20px rgba(167,139,250,0.6);
+}
+
+.guide-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 15px;
+    object-fit: cover;
+
+    border: 2px solid rgba(167,139,250,0.4);
+    box-shadow: 0 0 15px rgba(167,139,250,0.3);
+}
+
+/* CONTENT */
+.guide-info h3 {
+    color: #a78bfa;
+    margin: 0;
+}
+
+.rating {
+    color: gold;
+    font-weight: bold;
+}
+
+.guide-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: #94a3b8;
+}
+
+/* ===== PROFILE OVERLAY ===== */
+.profile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.7);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 9998;
+}
+
+.profile-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ===== PROFILE PANEL (UPGRADED) ===== */
+.profile-panel {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 360px;
+    height: 100vh;
+
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(15px);
+
+    border-left: 1px solid rgba(167,139,250,0.2);
+    box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+
+    padding: 25px;
+    transition: 0.4s ease;
+    z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-panel.active {
+    right: 0;
+}
+
+/* HEADER */
+.profile-panel h2 {
+    color: #a78bfa;
+    margin-bottom: 10px;
+}
+
+/* INFO */
+.profile-panel p {
+    color: #cbd5f5;
+    font-size: 0.95rem;
+    margin: 5px 0;
+}
+
+/* SEPARATOR */
+.profile-panel::after {
+    content: "";
+    margin-top: 20px;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+}
+
+/* BUTTON */
+.become-guide button {
+    margin-top: 20px;
+    width: 100%;
+
+    background: linear-gradient(135deg, #22d3ee, #a78bfa);
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.become-guide button:hover {
+    transform: scale(1.05);
+}
+/* MODAL */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+}
+.modal-overlay.active { display: block; }
+
+.guide-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: #111827;
+    padding: 25px;
+    border-radius: 15px;
+    width: 350px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.guide-modal.active {
+    display: flex;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.guide-modal input,
+.guide-modal textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+.guide-modal button {
+    background: linear-gradient(135deg, #22d3ee, #a78bfa);
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+}

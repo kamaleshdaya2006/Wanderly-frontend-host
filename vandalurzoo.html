@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html>
+<title>Vandalur Zoo Page</title>
+<head> 
+<link rel="stylesheet" type="text/css" href="marina.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="home-bg">
+
+<div class="home-container" onclick="goToHome()">
+    <i class="fa-solid fa-house home-icon"></i>
+    <span class="home-text">Back to Home</span>
+</div>
+
+<div class="profile-container" onmouseover="openProfile()">
+    <i class="fa-solid fa-circle-user profile-icon"></i>
+    <span class="profile-text">View Profile</span>
+</div>
+
+<!-- Profile panel stays same -->
+<div class="profile-overlay" id="profileOverlay"></div>
+<div class="profile-panel" id="profilePanel">
+    <div class="profile-header">
+        <h2>My Profile</h2>
+        <i class="fa-solid fa-xmark close-btn" onclick="closeProfile()"></i>
+    </div>
+
+    <div class="profile-body">
+        <i class="fa-solid fa-circle-user profile-big-icon"></i>
+        <h3>Kamalesh Paramadayalan</h3>
+        <p>B.Tech CSE | Wanderly User</p>
+
+        <div class="profile-info">
+            <div><strong>Email:</strong> kamalesh@example.com</div>
+            <div><strong>City:</strong> Chennai</div>
+            <div><strong>Member Since:</strong> 2025</div>
+        </div>
+    </div>
+</div>
+
+<!-- Title -->
+<div class="title-block">
+    <h1 class="title-text">Vandalur Zoo</h1>
+    <div class="subtitle">
+        <span class="line"></span>
+        <span class="subtitle-text">Where the wild meets the city!</span>
+        <span class="line"></span>
+    </div>
+</div> 
+
+<!-- Main description -->
+<div class="marina-section marina-page">
+    
+    <div class="marina-text-card">
+        <h2>Arignar Anna Zoological Park</h2>
+        <p>
+            Located in Vandalur, this is one of the largest zoological
+            parks in India, spread across more than 600 hectares.
+            The zoo is home to hundreds of species including lions,
+            tigers, elephants, reptiles, and exotic birds.
+            It is a perfect destination for families, students,
+            and wildlife enthusiasts.
+        </p>
+
+        <div class="marina-highlights">
+            <div class="highlight">
+                <i class="fa-solid fa-paw"></i>
+                <span>600+ hectares</span>
+            </div>
+            <div class="highlight">
+                <i class="fa-solid fa-hippo"></i>
+                <span>Hundreds of species</span>
+            </div>
+            <div class="highlight">
+                <i class="fa-solid fa-bicycle"></i>
+                <span>Cycle & safari rides</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="marina-image">
+        <img src="vandalurzoo.jpg" alt="Vandalur Zoo">
+    </div>
+
+</div>
+
+<!-- Food Section -->
+<section class="street-food-section">
+    <h2 class="section-title">Food Options Inside the Zoo</h2>
+    <p class="section-subtitle">
+        Simple and quick bites for visitors.
+    </p>
+
+    <div class="food-cards">
+
+        <div class="food-card">
+            <h3>Ice Cream Stalls</h3>
+            <div class="rating">★★★★☆ <span>4.3</span></div>
+            <p>
+                Refreshing ice creams available across the zoo,
+                especially near resting zones.
+            </p>
+        </div>
+
+        <div class="food-card">
+            <h3>Snack Counters</h3>
+            <div class="rating">★★★★☆ <span>4.2</span></div>
+            <p>
+                Quick snacks like chips, biscuits, and cool drinks
+                available at multiple kiosks.
+            </p>
+        </div>
+
+        <div class="food-card">
+            <h3>South Indian Meals</h3>
+            <div class="rating">★★★★☆ <span>4.4</span></div>
+            <p>
+                Simple and affordable meals including rice,
+                sambar, and curd served at the food court.
+            </p>
+        </div>
+
+        <div class="food-card">
+            <h3>Fresh Juice Stalls</h3>
+            <div class="rating">★★★★☆ <span>4.5</span></div>
+            <p>
+                Fresh fruit juices and tender coconut water
+                available near major walking routes.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="food-nav">
+        <button onclick="location.href='zoo-food.html'">
+            Explore All Food Options
+        </button>
+    </div>
+</section>
+
+<!-- Souvenirs -->
+<section class="souvenir-section">
+    <h2 class="section-title">Souvenirs to Take Home</h2>
+
+    <div class="souvenir-cards">
+
+        <div class="souvenir-card">
+            <h3>Animal Plush Toys</h3>
+            <div class="rating">★★★★☆ <span>4.6</span></div>
+            <p>
+                Soft toys shaped like tigers, elephants,
+                and pandas—perfect for kids.
+            </p>
+        </div>
+
+        <div class="souvenir-card">
+            <h3>Wildlife Keychains</h3>
+            <div class="rating">★★★★☆ <span>4.3</span></div>
+            <p>
+                Affordable animal-themed keychains
+                available at zoo gift shops.
+            </p>
+        </div>
+
+        <div class="souvenir-card">
+            <h3>Nature Posters</h3>
+            <div class="rating">★★★★☆ <span>4.2</span></div>
+            <p>
+                Educational posters of animals,
+                birds, and reptiles found in the zoo.
+            </p>
+        </div>
+
+        <div class="souvenir-card">
+            <h3>Eco-friendly Bottles</h3>
+            <div class="rating">★★★★☆ <span>4.4</span></div>
+            <p>
+                Reusable bottles and eco-friendly
+                products promoting wildlife awareness.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="souvenir-nav">
+        <button onclick="location.href='zoo-souvenirs.html'">
+            Explore All Souvenirs
+        </button>
+    </div>
+</section>
+
+<!-- Activities -->
+<section class="activity-section">
+    <h2 class="section-title">Things to Do at the Zoo</h2>
+
+    <div class="activity-cards">
+
+        <div class="activity-card">
+            <i class="fa-solid fa-binoculars"></i>
+            <h3>Animal Watching</h3>
+            <p>
+                Observe lions, tigers, elephants,
+                and exotic birds in natural enclosures.
+            </p>
+        </div>
+
+        <div class="activity-card">
+            <i class="fa-solid fa-bicycle"></i>
+            <h3>Cycle Around the Zoo</h3>
+            <p>
+                Rent bicycles to explore the vast
+                zoo comfortably.
+            </p>
+        </div>
+
+        <div class="activity-card">
+            <i class="fa-solid fa-train"></i>
+            <h3>Battery Car Ride</h3>
+            <p>
+                Use electric vehicles to move around
+                the zoo without long walks.
+            </p>
+        </div>
+
+        <div class="activity-card">
+            <i class="fa-solid fa-camera"></i>
+            <h3>Wildlife Photography</h3>
+            <p>
+                Capture amazing shots of animals
+                in spacious habitats.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- Map -->
+<section class="map-section">
+    <h2 class="section-title">Find Vandalur Zoo</h2>
+
+    <div class="map-container">
+        <iframe
+            src="https://www.google.com/maps?q=Arignar+Anna+Zoological+Park+Vandalur&output=embed"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+</section>
+
+<!-- Reviews -->
+<section class="reviews-section">
+    <h2 class="section-title">Visitor Reviews</h2>
+
+    <div class="review-cards">
+
+        <div class="review-card">
+            <div class="review-header">
+                <h3>Rohit P</h3>
+                <span class="rating">★★★★★</span>
+            </div>
+            <p>
+                A huge zoo with lots of animals.
+                The cycle ride made the visit very easy.
+            </p>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <h3>Ananya R</h3>
+                <span class="rating">★★★★☆</span>
+            </div>
+            <p>
+                Great place for families and kids.
+                Clean environment and well-maintained enclosures.
+            </p>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <h3>Karthik V</h3>
+                <span class="rating">★★★★★</span>
+            </div>
+            <p>
+                One of the best zoos in India.
+                Loved the lion and elephant sections.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <h2>Wanderly</hh2>
+        <p>Your local companion for exploring Chennai like a true traveler.</p>
+
+        <div class="footer-contact">
+            <span><i class="fa-solid fa-envelope"></i> contact@wanderly.com</span>
+            <span><i class="fa-solid fa-phone"></i> +91 98765 43210</span>
+            <span><i class="fa-solid fa-location-dot"></i> Chennai, India</span>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Wanderly. Travel Free.
+    </div>
+</footer>
+
+<script>
+function openProfile() {
+    document.getElementById("profilePanel").classList.add("active");
+    document.getElementById("profileOverlay").classList.add("active");
+}
+
+function closeProfile() {
+    document.getElementById("profilePanel").classList.remove("active");
+    document.getElementById("profileOverlay").classList.remove("active");
+}
+
+function goToHome() {
+    window.location.href = "homepage.html";
+}
+</script>
+
+</body>
+</html>

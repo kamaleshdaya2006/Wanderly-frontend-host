@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wanderly – Sign Up</title>
+    <link rel="stylesheet" href="Signinpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="title-floating-box">
+    <h1 class="site-title">WANDERLY</h1>
+</div>
+
+<div class="bg-wrapper">
+    <div class="bg-layer"></div>
+
+    <div class="content-layer">
+        <div class="overallbox">
+
+           <div class="top-toggle">
+    <a href="signin.html" class="siginbox">SIGN-IN</a>
+    <div class="siginbox active">SIGN-UP</div>
+</div>
+
+
+
+
+            <div class="form-area">
+                <form id="signupForm">
+
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="Enter your city (optional)">
+                    </div>
+
+                    <button type="submit" class="signin-btn">Create Account</button>
+
+                    <p id="message" style="text-align:center; margin-top:15px;"></p>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("signupForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const city = document.getElementById("city").value;
+        const message = document.getElementById("message");
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                    city: city
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                message.style.color = "green";
+                message.textContent = "Account created! Redirecting to sign in...";
+
+                setTimeout(() => {
+                    window.location.href = "signin.html";
+                }, 1500);
+
+            } else {
+                message.style.color = "red";
+                message.textContent = data.message;
+            }
+
+        } catch (error) {
+            message.style.color = "red";
+            message.textContent = "Server error. Try again.";
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>

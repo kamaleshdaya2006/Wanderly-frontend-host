@@ -1,0 +1,249 @@
+/* Page background */
+.home-bg {
+    background-color: #E3F2FD;   /* light blue background */
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/* Home & Profile icons */
+.home-container,
+.profile-container {
+    position: absolute;
+    top: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.home-container { left: 20px; }
+.profile-container { right: 20px; }
+
+.home-icon,
+.profile-icon {
+    font-size: 40px;
+    color: #1565C0;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.home-text,
+.profile-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1565C0;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+.home-container:hover .home-icon,
+.profile-container:hover .profile-icon {
+    transform: scale(1.1);
+    color: #0D47A1;
+}
+
+/* Title block */
+.title-block {
+    text-align: center;
+    padding: 50px 0 30px;
+}
+
+.title-text {
+    font-family: "Times New Roman", serif;
+    font-size: 3.5rem;
+    color: #1565C0;
+    margin: 0;
+}
+
+.subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.subtitle-text {
+    font-size: 1rem;
+    color: #42A5F5;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.line {
+    height: 2px;
+    width: 50px;
+    background-color: #42A5F5;
+}
+
+/* Profile overlay */
+.profile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 2000;
+}
+
+.profile-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.profile-panel {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 420px;
+    height: 100vh;
+    background: white;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.25);
+    transition: right 0.4s ease;
+    z-index: 2100;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-panel.active {
+    right: 0;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #1565C0;
+    color: white;
+}
+
+.close-btn {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.profile-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.profile-info {
+    margin-top: 25px;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.profile-info div {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Souvenir section */
+.souvenir-page-section {
+    padding: 60px 30px;
+}
+
+/* Vertical scroll */
+.souvenir-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    max-height: 75vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 10px;
+}
+
+.souvenir-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.souvenir-scroll::-webkit-scrollbar-thumb {
+    background: #42A5F5;
+    border-radius: 10px;
+}
+
+/* Souvenir cards */
+.souvenir-card-large {
+    min-width: 320px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.souvenir-card-large:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.25);
+}
+
+.souvenir-card-large h3 {
+    color: #0D47A1;
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+}
+
+.souvenir-card-large p {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* Rating */
+.rating {
+    color: #f5a623;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Meta info */
+.souvenir-meta {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #555;
+}
+/* Add Souvenir Floating Button */
+.add-souvenir-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -10px;
+    margin-bottom: 30px;
+}
+
+.add-souvenir-btn {
+    background: linear-gradient(135deg, #42A5F5, #1565C0);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 40px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 12px 28px rgba(21,101,192,0.45);
+    animation: souvenirFloat 2.5s ease-in-out infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-souvenir-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 18px 38px rgba(21,101,192,0.6);
+}
+
+@keyframes souvenirFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
+}

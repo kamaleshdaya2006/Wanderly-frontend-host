@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Item - Wanderly</title>
+
+    <link rel="stylesheet" href="add-item.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+
+<body id="pageBody">
+
+<header class="top-bar">
+    <div class="back-btn" onclick="goBack()">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Chennai</span>
+    </div>
+    <h2 id="pageTitle">Add Item</h2>
+</header>
+
+<div class="main-container">
+
+    <div class="form-card">
+        <form id="dynamicForm"></form>
+        <div id="messageBox"></div>
+    </div>
+
+    <div class="map-card" id="mapSection">
+        <div class="map-search">
+            <input type="text" id="mapSearchInput" placeholder="Search location">
+            <button onclick="searchLocation()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+        <div id="map"></div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const type = params.get("type");
+
+const form = document.getElementById("dynamicForm");
+const messageBox = document.getElementById("messageBox");
+const pageTitle = document.getElementById("pageTitle");
+const body = document.body;
+
+/* ================= THEME ================= */
+
+if (type === "place") {
+    body.classList.add("green-theme");
+    pageTitle.innerText = "Add Place";
+}
+if (type === "food") {
+    body.classList.add("red-theme");
+    pageTitle.innerText = "Add Food";
+    document.getElementById("mapSection").style.display = "none";
+}
+if (type === "souvenir") {
+    body.classList.add("blue-theme");
+    pageTitle.innerText = "Add Souvenir";
+    document.getElementById("mapSection").style.display = "none";
+}
+
+/* ================= FORM RENDER ================= */
+
+function renderForm() {
+
+    if (type === "place") {
+        form.innerHTML = `
+            <input required id="name" placeholder="Place Name">
+            <textarea required id="description" placeholder="Description"></textarea>
+
+            <select required id="category">
+                <option value="">Select Category</option>
+                <option value="top">Top Places</option>
+                <option value="hidden">Hidden Gems</option>
+            </select>
+
+            <input readonly id="latitude" placeholder="Latitude">
+            <input readonly id="longitude" placeholder="Longitude">
+
+            <button type="button" class="submit-btn" onclick="submitPlace()">Submit</button>
+        `;
+    }
+
+    if (type === "food") {
+        form.innerHTML = `
+            <input required id="place_id" placeholder="Place ID">
+            <input required id="name" placeholder="Food Name">
+            <textarea required id="description" placeholder="Description"></textarea>
+            <input id="rating" placeholder="Rating (0-5)">
+            <input id="shop_name" placeholder="Shop Name">
+
+            <button type="button" class="submit-btn" onclick="submitFood()">Submit</button>
+        `;
+    }
+
+    if (type === "souvenir") {
+        form.innerHTML = `
+            <input required id="place_id" placeholder="Place ID">
+            <input required id="name" placeholder="Souvenir Name">
+            <textarea required id="description" placeholder="Description"></textarea>
+            <input id="rating" placeholder="Rating (0-5)">
+            <input id="shop_name" placeholder="Shop Name">
+
+            <button type="button" class="submit-btn" onclick="submitSouvenir()">Submit</button>
+        `;
+    }
+}
+renderForm();
+
+/* ================= MAP ================= */
+
+let map = L.map('map').setView([13.0827, 80.2707], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+let marker;
+
+function searchLocation() {
+    const query = document.getElementById("mapSearchInput").value;
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.length) return;
+
+            const lat = data[0].lat;
+            const lon = data[0].lon;
+
+            if (marker) map.removeLayer(marker);
+
+            marker = L.marker([lat, lon]).addTo(map);
+            map.setView([lat, lon], 15);
+
+            document.getElementById("latitude").value = lat;
+            document.getElementById("longitude").value = lon;
+        });
+}
+
+/* ================= SUBMIT FUNCTIONS ================= */
+
+function showMessage(text, isError=false) {
+    messageBox.innerText = text;
+    messageBox.style.color = isError ? "red" : "green";
+}
+
+function submitPlace() {
+
+    const payload = {
+        name: document.getElementById("name").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        category: document.getElementById("category").value,
+        latitude: document.getElementById("latitude").value,
+        longitude: document.getElementById("longitude").value
+    };
+
+    fetch("http://localhost:5000/places", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json().then(data => ({status: res.status, body: data})))
+    .then(response => {
+
+        if (response.status === 201)
+            showMessage("Place submitted for approval");
+
+        else if (response.status === 409)
+            showMessage("Place already exists", true);
+
+        else
+            showMessage(response.body.error, true);
+    });
+}
+
+function submitFood() {
+
+    const payload = {
+        place_id: document.getElementById("place_id").value,
+        name: document.getElementById("name").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        rating: document.getElementById("rating").value,
+        shop_name: document.getElementById("shop_name").value
+    };
+
+    fetch("http://localhost:5000/foods", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json().then(data => ({status: res.status, body: data})))
+    .then(response => {
+
+        if (response.status === 201)
+            showMessage("Food added successfully");
+
+        else if (response.status === 409)
+            showMessage("Food already exists", true);
+
+        else
+            showMessage(response.body.error, true);
+    });
+}
+
+function submitSouvenir() {
+
+    const payload = {
+        place_id: document.getElementById("place_id").value,
+        name: document.getElementById("name").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        rating: document.getElementById("rating").value,
+        shop_name: document.getElementById("shop_name").value
+    };
+
+    fetch("http://localhost:5000/souvenirs", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json().then(data => ({status: res.status, body: data})))
+    .then(response => {
+
+        if (response.status === 201)
+            showMessage("Souvenir added successfully");
+
+        else if (response.status === 409)
+            showMessage("Souvenir already exists", true);
+
+        else
+            showMessage(response.body.error, true);
+    });
+}
+
+function goBack() {
+    window.location.href = "chennaimain.html";
+}
+</script>
+</body>
+</html>
