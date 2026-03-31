@@ -137,7 +137,10 @@ function loadTrips() {
     if (!user) return;
 
     fetch(`https://wanderly-backend-4hhs.onrender.com/trips/${user.user_id}`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to load trips");
+            return res.json();
+        })
         .then(trips => {
 
             if (trips.length === 0) {
@@ -146,7 +149,6 @@ function loadTrips() {
             }
 
             trips.forEach(trip => {
-
                 let daysHTML = "";
                 for (let d = 1; d <= trip.days; d++) {
                     daysHTML += renderDay(trip.trip_id, d);
@@ -154,84 +156,64 @@ function loadTrips() {
 
                 container.innerHTML += `
                     <div class="trip-card">
-                       <div class="trip-header">
-    <h3>${trip.name}</h3>
-    <div>
-        <button class="edit-trip-btn"
-    onclick="editTrip(${trip.trip_id}, ${trip.days})">
-    <i class="fa-solid fa-pen"></i>
-</button>
-
-        <button class="delete-btn"
-            onclick="deleteTrip(${trip.trip_id})">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </div>
-</div>
-
-
-                        <p class="trip-date">
-                            ${trip.days} day trip
-                        </p>
-
-                        <div class="trip-days">
-                            ${daysHTML}
+                        <div class="trip-header">
+                            <h3>${trip.name}</h3>
+                            <button onclick="deleteTrip(${trip.trip_id})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </div>
+                        <p>${trip.days} day trip</p>
+                        <div class="trip-days">${daysHTML}</div>
                     </div>
                 `;
 
-                // load places for this trip
                 loadTripPlaces(trip.trip_id);
             });
-        });
+        })
+        .catch(err => console.error("Trips error:", err));
 }
 
 // -----------------------------
-// Load places inside trip days
+// Load trip places
 // -----------------------------
 function loadTripPlaces(tripId) {
-    fetch(`https://wanderly-backend-4hhs.onrender.com/trip_places/${tripId}`)
-        .then(res => res.json())
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/trip_places/${tripId}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Trip places failed");
+            return res.json();
+        })
         .then(days => {
-
             for (const day in days) {
                 const list = document.getElementById(`day-${tripId}-${day}`);
                 if (!list) continue;
 
                 list.innerHTML = days[day]
                     .map(place => `
-                    <li class="place-item">
-    <span class="place-name">${place.name}</span>
-
-    <div class="place-actions">
-        <button class="place-btn remove-btn"
-            onclick="removePlace(${place.id})">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <button class="place-btn move-btn"
-            onclick="movePlace(${place.id})">
-            <i class="fa-solid fa-arrows-up-down-left-right"></i>
-        </button>
-    </div>
-</li>
-
+                        <li class="place-item">
+                            ${place.name}
+                            <button onclick="removePlace(${place.id})">❌</button>
+                        </li>
                     `)
                     .join("");
             }
-        });
+        })
+        .catch(err => console.error("Trip places error:", err));
 }
+
+// -----------------------------
 function removePlace(tpId) {
-    fetch(`https://wanderly-backend-4hhs.onrender.com/trip_places/${tpId}`, {
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/trip_places/${tpId}`, {
         method: "DELETE"
     })
     .then(() => loadTrips());
 }
+
+// -----------------------------
 function movePlace(tpId) {
     const newDay = prompt("Move to which day?");
     if (!newDay) return;
 
-    fetch(`https://wanderly-backend-4hhs.onrender.com/trip_places/${tpId}`, {
+    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/trip_places/${tpId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -246,14 +228,12 @@ function movePlace(tpId) {
 // -----------------------------
 function createTrip() {
     const name = document.getElementById("tripName").value;
-    if (!name) {
-        alert("Enter trip name");
-        return;
-    }
-
     const user = JSON.parse(localStorage.getItem("user"));
 
-    fetch("https://wanderly-backend-4hhs.onrender.com/trips", {
+    if (!name) return alert("Enter trip name");
+    if (!user) return alert("Login first");
+
+    fetch("https://wanderly-backend-4hhs.onrender.com/trips/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -262,14 +242,17 @@ function createTrip() {
             days: tripDays
         })
     })
+    .then(res => {
+        if (!res.ok) throw new Error("Create trip failed");
+        return res.json();
+    })
     .then(() => {
         closeTripForm();
         loadTrips();
-    });
+    })
+    .catch(err => console.error("Create trip error:", err));
 }
 
-// -----------------------------
-// Delete trip
 // -----------------------------
 function deleteTrip(tripId) {
     fetch(`https://wanderly-backend-4hhs.onrender.com/trips/${tripId}`, {
@@ -277,26 +260,7 @@ function deleteTrip(tripId) {
     })
     .then(() => loadTrips());
 }
-function editTrip(tripId, currentDays) {
-    const newDays = prompt("Enter new number of days:", currentDays);
-    if (!newDays) return;
 
-    const newStart = prompt("Enter new start date (YYYY-MM-DD):");
-    if (!newStart) return;
-
-    fetch(`https://wanderly-backend-4hhs.onrender.com/trips/${tripId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            days: parseInt(newDays),
-            start_date: newStart
-        })
-    })
-    .then(() => loadTrips());
-}
-
-// -----------------------------
-// Render each day block
 // -----------------------------
 function renderDay(tripId, dayNumber) {
     return `
@@ -304,19 +268,19 @@ function renderDay(tripId, dayNumber) {
             <strong>Day ${dayNumber}</strong>
 
             <input type="text"
-                class="place-search"
                 placeholder="Search places..."
                 oninput="searchPlaces(this, ${tripId}, ${dayNumber})">
 
             <div class="search-results"></div>
 
-            <ul class="day-places" id="day-${tripId}-${dayNumber}"></ul>
+            <ul id="day-${tripId}-${dayNumber}"></ul>
         </div>
     `;
 }
 
 // -----------------------------
 // Search places
+// -----------------------------
 function searchPlaces(input, tripId, dayNumber) {
     const query = input.value;
     const resultsBox = input.nextElementSibling;
@@ -328,13 +292,12 @@ function searchPlaces(input, tripId, dayNumber) {
 
     fetch(`https://wanderly-backend-4hhs.onrender.com/places/search?q=${query}`)
         .then(res => {
-            if (!res.ok) throw new Error("Search API failed");
+            if (!res.ok) throw new Error("Search failed");
             return res.json();
         })
         .then(data => {
             resultsBox.innerHTML = data.map(place => `
-                <div class="search-item"
-                    onclick="previewPlace(${place.place_id}, '${place.name}', '${place.description}', '${place.image}', ${tripId}, ${dayNumber})">
+                <div onclick="previewPlace(${place.place_id}, '${place.name}', '${place.description}', '${place.image}', ${tripId}, ${dayNumber})">
                     ${place.name}
                 </div>
             `).join("");
@@ -343,26 +306,16 @@ function searchPlaces(input, tripId, dayNumber) {
 }
 
 // -----------------------------
-// Preview modal
-// -----------------------------
 function previewPlace(id, name, desc, img, tripId, dayNumber) {
     selectedPlace = { id, tripId, dayNumber };
 
     document.getElementById("previewName").textContent = name;
     document.getElementById("previewDesc").textContent = desc;
-
-    // safer image path
     document.getElementById("previewImg").src = img;
 
     document.getElementById("placePreview").classList.add("active");
 }
 
-function closePreview() {
-    document.getElementById("placePreview").classList.remove("active");
-}
-
-// -----------------------------
-// Confirm place
 // -----------------------------
 function confirmPlace() {
     fetch("https://wanderly-backend-4hhs.onrender.com/trips/trip_places", {
@@ -375,14 +328,17 @@ function confirmPlace() {
             order_in_day: 1
         })
     })
+    .then(res => {
+        if (!res.ok) throw new Error("Add place failed");
+        return res.json();
+    })
     .then(() => {
         closePreview();
         loadTrips();
-    });
+    })
+    .catch(err => console.error("Add place error:", err));
 }
 
-// -----------------------------
-// Trip form controls
 // -----------------------------
 function openTripForm() {
     document.getElementById("tripOverlay").classList.add("active");
@@ -394,12 +350,18 @@ function closeTripForm() {
     document.getElementById("tripForm").classList.remove("active");
 }
 
+function closePreview() {
+    document.getElementById("placePreview").classList.remove("active");
+}
+
+// -----------------------------
 function changeDays(val) {
     tripDays += val;
     if (tripDays < 1) tripDays = 1;
     if (tripDays > 14) tripDays = 14;
     document.getElementById("dayCount").textContent = tripDays;
 }
+
 function openProfile() { document.getElementById("profilePanel").classList.add("active"); document.getElementById("profileOverlay").classList.add("active"); } function closeProfile() { document.getElementById("profilePanel").classList.remove("active"); document.getElementById("profileOverlay").classList.remove("active"); } function logout() { localStorage.removeItem("user"); window.location.href = "signin.html"; } function loadProfile() { const userData = localStorage.getItem("user"); if (!userData) { window.location.href = "signin.html"; return; } const user = JSON.parse(userData); document.getElementById("profileName").textContent = user.name; document.getElementById("profileEmail").textContent = user.email; document.getElementById("profileCity").textContent = user.city; }
 // -----------------------------
 document.addEventListener("DOMContentLoaded", () => {
