@@ -328,7 +328,7 @@ let allPlaces = [];
 
 // Load all places once
 function loadAllPlaces() {
-    fetch("http://localhost:5000/places")
+    fetch("https://wanderly-backend-4hhs.onrender.com/places")
         .then(res => res.json())
         .then(data => {
             allPlaces = data;
@@ -388,7 +388,7 @@ function goToSanthome() { window.location.href = "santhome.html"; }
 function goToTheosophical() { window.location.href = "theosophical.html"; }
 function goToMuseum() { window.location.href = "museum.html"; }
 function loadTopPlaces() {
-    fetch("http://localhost:5000/places?category=top")
+    fetch("https://wanderly-backend-4hhs.onrender.com/places?category=top")
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById("placesContainer");
@@ -423,7 +423,7 @@ function loadTopPlaces() {
 
 
 function loadGuides() {
-    fetch("http://localhost:5000/guides")
+    fetch("https://wanderly-backend-4hhs.onrender.com/guides")
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById("guidesContainer");
@@ -552,7 +552,7 @@ function submitReview() {
         return;
     }
 
-   fetch("http://localhost:5000/reviews", {
+   fetch("https://wanderly-backend-4hhs.onrender.com/reviews", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
@@ -585,10 +585,10 @@ function loadReviewOptions(type) {
 
     let url = "";
 
-    if (type === "place") url = "http://localhost:5000/places";
-    if (type === "food") url = "http://localhost:5000/foods";
-    if (type === "souvenir") url = "http://localhost:5000/souvenirs";
-    if (type === "guide") url = "http://localhost:5000/guides";
+    if (type === "place") url = "https://wanderly-backend-4hhs.onrender.com/places";
+    if (type === "food") url = "https://wanderly-backend-4hhs.onrender.com/foods";
+    if (type === "souvenir") url = "https://wanderly-backend-4hhs.onrender.com/souvenirs";
+    if (type === "guide") url = "https://wanderly-backend-4hhs.onrender.com/guides";
 
     fetch(url)
     .then(res => res.json())
