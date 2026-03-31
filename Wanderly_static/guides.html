@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Guides - Chennai</title>
+
+    <link rel="stylesheet" href="guides.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<!-- HOME -->
+<div class="home-container" onclick="goHome()">
+    <i class="fa-solid fa-house home-icon"></i>
+    <span class="home-text">Back</span>
+</div>
+
+<!-- PROFILE -->
+<div class="profile-container" onclick="openProfile()">
+    <i class="fa-solid fa-circle-user profile-icon"></i>
+    <span class="profile-text">Profile</span>
+</div>
+
+<div class="profile-overlay" id="overlay"></div>
+
+<div class="profile-panel" id="panel">
+    <h2 id="name"></h2>
+    <p id="email"></p>
+    <p id="city"></p>
+
+    <div class="become-guide">
+        <button onclick="openGuideModal()">Become a Guide</button>
+    </div>
+</div>
+
+<!-- TITLE -->
+<div class="title-block">
+    <h1 class="title-text">Local Guides</h1>
+    <div class="subtitle-text">Explore with experts</div>
+</div>
+
+
+
+<!-- GUIDES -->
+<section class="guide-section">
+    <div id="guideContainer" class="guide-scroll"></div>
+</section>
+
+<!-- GUIDE MODAL -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<div class="guide-modal" id="guideModal">
+    <h2>Apply as Guide</h2>
+
+    <input type="text" id="g_name" placeholder="Your Name">
+    <textarea id="g_desc" placeholder="Description"></textarea>
+    <input type="text" id="g_lang" placeholder="Languages (e.g. English,Tamil)">
+    <input type="number" id="g_price" placeholder="Price per day">
+    <input type="file" id="g_image" accept="image/*">
+    <button onclick="submitGuide()">Submit</button>
+    <button class="close-btn" onclick="closeGuideModal()">Cancel</button>
+</div>
+<!-- BOOK GUIDE MODAL -->
+<div class="modal-overlay" id="bookingOverlay"></div>
+
+<div class="guide-modal" id="bookingModal">
+    <h2>Book Guide</h2>
+
+    <p id="selectedGuideName"></p>
+
+    <input type="date" id="bookingDate">
+
+    <button onclick="confirmBooking()">Book Guide</button>
+    <button onclick="closeBookingModal()">Cancel</button>
+</div>
+<script src="guides.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html>
+<title>Place Details</title>
+<head> 
+<link rel="stylesheet" type="text/css" href="marina.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="home-bg">
+
+<!-- Home Button -->
+<div class="home-container" onclick="goToHome()">
+    <i class="fa-solid fa-house home-icon"></i>
+    <span class="home-text">Back to Chennai</span>
+</div>
+
+<div class="profile-container" onmouseover="openProfile()"
+>
+    <i class="fa-solid fa-circle-user profile-icon"></i>
+    <span class="profile-text">View Profile</span>
+</div>
+
+<div class="profile-overlay" id="profileOverlay"></div>
+
+<div class="profile-panel" id="profilePanel">
+    <div class="profile-header">
+        <h2>My Profile</h2>
+        <i class="fa-solid fa-xmark close-btn" onclick="closeProfile()"></i>
+    </div>
+
+    <div class="profile-body">
+        <h3 id="profileName">User Name</h3>
+        <p>Wanderly User</p>
+
+        <div class="profile-info">
+            <div><strong>Email:</strong> <span id="profileEmail"></span></div>
+            <div><strong>City:</strong> <span id="profileCity"></span></div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="profile-btn trip-btn" onclick="goToTrips()">
+                <i class="fa-solid fa-route"></i>
+                Plan a Trip
+            </button>
+
+            <button class="profile-btn logout-btn" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Title -->
+<div class="title-block">
+    <h1 class="title-text" id="placeTitle">Place Name</h1>
+    <div class="subtitle">
+        <span class="line"></span>
+        <span class="subtitle-text" id="placeTagline">Explore the beauty</span>
+        <span class="line"></span>
+    </div>
+</div> 
+
+<!-- Main Place Section -->
+<div class="marina-section marina-page">
+    
+    <div class="marina-text-card">
+        <h2 id="placeHeading">About this place</h2>
+        <p id="placeDescription">
+            Loading description...
+        </p>
+
+        <div class="marina-highlights" id="placeHighlights">
+            <!-- Dynamic highlights -->
+        </div>
+    </div>
+
+    <div class="marina-image">
+        <img id="placeImage" src="" alt="Place image">
+    </div>
+
+</div>
+<section class="street-food-section">
+    <h2 class="section-title">Famous Street Foods</h2>
+    <p class="section-subtitle">Local flavors you must try</p>
+
+    <div class="food-cards" id="foodContainer">
+        <!-- Dynamic foods -->
+    </div>
+</section>
+<section class="souvenir-section">
+    <h2 class="section-title">Souvenirs to Take Home</h2>
+    <p class="section-subtitle">Local treasures from this place</p>
+
+    <div class="souvenir-cards" id="souvenirContainer">
+        <!-- Dynamic souvenirs -->
+    </div>
+</section>
+<section class="activity-section">
+    <h2 class="section-title">Things to Do</h2>
+    <p class="section-subtitle">Experiences you shouldn’t miss</p>
+
+    <div class="activity-cards" id="activityContainer">
+        <!-- Dynamic activities -->
+    </div>
+</section>
+	<section class="map-section">
+    <h2 class="section-title">Location</h2>
+
+    <div class="map-container">
+        <iframe id="placeMap"
+            src=""
+            allowfullscreen
+            loading="lazy">
+        </iframe>
+    </div>
+</section>
+<section class="reviews-section">
+    <h2 class="section-title">What Visitors Say</h2>
+
+    <div class="review-cards" id="reviewContainer">
+        <!-- Dynamic reviews -->
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-content">
+        <h2>Wanderly</h2>
+        <p>Your local companion for exploring cities like a true traveler.</p>
+
+        <div class="footer-contact">
+            <span><i class="fa-solid fa-envelope"></i> contact@wanderly.com</span>
+            <span><i class="fa-solid fa-phone"></i> +91 98765 43210</span>
+            <span><i class="fa-solid fa-location-dot"></i> Chennai, India</span>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Wanderly. Travel Free.
+    </div>
+</footer>
+
+<script>
+/* ---------------------------
+   Navigation
+---------------------------- */
+function goToHome() {
+    window.location.href = "chennaimain.html";
+}
+
+function goToTrips() {
+    window.location.href = "trips.html";
+}
+
+function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "signin.html";
+}
+
+/* ---------------------------
+   Profile Hover Logic
+---------------------------- */
+let closeTimer;
+
+function openProfile() {
+    clearTimeout(closeTimer);
+    document.getElementById("profilePanel").classList.add("active");
+    document.getElementById("profileOverlay").classList.add("active");
+}
+
+function closeProfile() {
+    document.getElementById("profilePanel").classList.remove("active");
+    document.getElementById("profileOverlay").classList.remove("active");
+}
+
+/* ---------------------------
+   Load Profile Data
+---------------------------- */
+function loadProfile() {
+    const userData = localStorage.getItem("user");
+
+    if (!userData) {
+        window.location.href = "signin.html";
+        return;
+    }
+
+    const user = JSON.parse(userData);
+
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email || "N/A";
+    document.getElementById("profileCity").textContent = user.city || "N/A";
+}
+
+/* ---------------------------
+   Load Place Data
+---------------------------- */
+function loadPlace() {
+    const params = new URLSearchParams(window.location.search);
+    const placeId = params.get("id");
+
+    if (!placeId) {
+        document.getElementById("placeDescription").textContent =
+            "No place selected.";
+        return;
+    }
+
+    fetch(`http://localhost:5000/places/${placeId}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("Full response:", data);
+
+            const place = data.place;
+
+            // -------------------------
+            // Basic place info
+            // -------------------------
+            document.getElementById("placeTitle").textContent = place.name;
+            document.getElementById("placeHeading").textContent = place.name;
+            document.getElementById("placeDescription").textContent = place.description;
+            document.getElementById("placeImage").src = place.image;
+
+            // Map
+            document.getElementById("placeMap").src =
+                `https://www.google.com/maps?q=${place.name}&output=embed`;
+
+            // -------------------------
+            // Foods
+            // -------------------------
+            const foodContainer = document.getElementById("foodContainer");
+            foodContainer.innerHTML = "";
+            data.foods.forEach(food => {
+                foodContainer.innerHTML += `
+                    <div class="food-card">
+                        <h3>${food.name}</h3>
+                        <div class="rating">⭐ ${food.rating || ""}</div>
+                        <p>${food.description}</p>
+                        <strong>${food.shop_name || ""}</strong>
+                    </div>
+                `;
+            });
+
+            // -------------------------
+            // Souvenirs
+            // -------------------------
+            const souvenirContainer = document.getElementById("souvenirContainer");
+            souvenirContainer.innerHTML = "";
+            data.souvenirs.forEach(item => {
+                souvenirContainer.innerHTML += `
+                    <div class="souvenir-card">
+                        <h3>${item.name}</h3>
+                        <div class="rating">⭐ ${item.rating || ""}</div>
+                        <p>${item.description}</p>
+                        <strong>${item.shop_name || ""}</strong>
+                    </div>
+                `;
+            });
+
+            // -------------------------
+            // Activities
+            // -------------------------
+            const activityContainer = document.getElementById("activityContainer");
+            activityContainer.innerHTML = "";
+            data.activities.forEach(act => {
+    activityContainer.innerHTML += `
+        <div class="activity-card">
+            <i class="fa-solid ${act.icon || 'fa-star'}"></i>
+            <h3>${act.name}</h3>
+            <p>${act.description}</p>
+        </div>
+    `;
+});
+
+            // -------------------------
+            // Reviews
+            // -------------------------
+            const reviewContainer = document.getElementById("reviewContainer");
+            reviewContainer.innerHTML = "";
+            data.reviews.forEach(review => {
+                reviewContainer.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>Visitor</h3>
+                            <span class="rating">⭐ ${review.rating}</span>
+                        </div>
+                        <p>${review.text}</p>
+                    </div>
+                `;
+            });
+        })
+        .catch(err => {
+            console.error("Error loading place:", err);
+            document.getElementById("placeDescription").textContent =
+                "Failed to load place.";
+        });
+}
+
+/* ---------------------------
+   Load Foods
+---------------------------- */
+function loadFoods(placeId) {
+    fetch(`http://localhost:5000/places/${placeId}/foods`)
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById("foodContainer");
+            container.innerHTML = "";
+
+            data.forEach(food => {
+                container.innerHTML += `
+                    <div class="food-card">
+                        <h3>${food.name}</h3>
+                        <div class="rating">⭐ ${food.rating || ""}</div>
+                        <p>${food.description}</p>
+                        <strong>${food.shop_name || ""}</strong>
+                    </div>
+                `;
+            });
+        });
+}
+
+/* ---------------------------
+   Load Souvenirs
+---------------------------- */
+function loadSouvenirs(placeId) {
+    fetch(`http://localhost:5000/places/${placeId}/souvenirs`)
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById("souvenirContainer");
+            container.innerHTML = "";
+
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="souvenir-card">
+                        <h3>${item.name}</h3>
+                        <div class="rating">⭐ ${item.rating || ""}</div>
+                        <p>${item.description}</p>
+                        <strong>${item.shop_name || ""}</strong>
+                    </div>
+                `;
+            });
+        });
+}
+
+/* ---------------------------
+   Load Activities
+---------------------------- */
+function loadActivities(placeId) {
+    fetch(`http://localhost:5000/places/${placeId}/activities`)
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById("activityContainer");
+            container.innerHTML = "";
+
+            data.forEach(act => {
+                container.innerHTML += `
+                    <div class="activity-card">
+                        <i class="${act.icon || 'fa-solid fa-star'}"></i>
+                        <h3>${act.name}</h3>
+                        <p>${act.description}</p>
+                    </div>
+                `;
+            });
+        });
+}
+
+/* ---------------------------
+   Load Reviews
+---------------------------- */
+function loadReviews(placeId) {
+    fetch(`http://localhost:5000/places/${placeId}/reviews`)
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById("reviewContainer");
+            container.innerHTML = "";
+
+            data.forEach(review => {
+                container.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>User ${review.user_id}</h3>
+                            <span class="rating">⭐ ${review.rating}</span>
+                        </div>
+                        <p>${review.review_text}</p>
+                    </div>
+                `;
+            });
+        });
+}
+
+/* ---------------------------
+   On Page Load
+---------------------------- */
+document.addEventListener("DOMContentLoaded", function() {
+    loadProfile();
+    loadPlace();
+});
+</script>
+
+
+</body>
+</html>

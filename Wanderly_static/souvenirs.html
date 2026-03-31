@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+<title>Souvenirs in Chennai</title>
+<head>
+<link rel="stylesheet" href="souvenirs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="home-bg">
+
+<!-- Home -->
+<div class="home-container" onclick="goToChennai()">
+    <i class="fa-solid fa-house home-icon"></i>
+    <span class="home-text">Back to Chennai</span>
+</div>
+
+<!-- Profile -->
+<div class="profile-container" onmouseover="openProfile()">
+    <i class="fa-solid fa-circle-user profile-icon"></i>
+    <span class="profile-text">View Profile</span>
+</div>
+
+<div class="profile-overlay" id="profileOverlay"></div>
+
+<div class="profile-panel" id="profilePanel">
+    <div class="profile-header">
+        <h2>My Profile</h2>
+        <i class="fa-solid fa-xmark close-btn" onclick="closeProfile()"></i>
+    </div>
+
+    <div class="profile-body">
+        <h3 id="profileName"></h3>
+        <p>Wanderly User</p>
+
+        <div class="profile-info">
+            <div><strong>Email:</strong> <span id="profileEmail"></span></div>
+            <div><strong>City:</strong> <span id="profileCity"></span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Title -->
+<div class="title-block">
+    <h1 class="title-text">Chennai Souvenirs</h1>
+    <div class="subtitle">
+        <span class="line"></span>
+        <span class="subtitle-text">Take memories home</span>
+        <span class="line"></span>
+    </div>
+<br><!-- Add Souvenir Floating Button -->
+<div class="add-souvenir-container">
+    <button class="add-souvenir-btn" onclick="goToAddItem('souvenir')">
+        <i class="fa-solid fa-plus"></i>
+        Add a Souvenir
+    </button>
+</div>
+</div>
+
+<!-- Souvenir Section -->
+<section class="souvenir-page-section">
+    <div class="souvenir-scroll" id="souvenirContainer">
+        <!-- souvenirs load here -->
+    </div>
+</section>
+
+<script>
+function goToChennai() {
+    window.location.href = "chennaimain.html";
+}
+
+/* Profile logic */
+function openProfile() {
+    document.getElementById("profilePanel").classList.add("active");
+    document.getElementById("profileOverlay").classList.add("active");
+}
+
+function closeProfile() {
+    document.getElementById("profilePanel").classList.remove("active");
+    document.getElementById("profileOverlay").classList.remove("active");
+}
+
+function loadProfile() {
+    const userData = localStorage.getItem("user");
+    if (!userData) {
+        window.location.href = "signin.html";
+        return;
+    }
+
+    const user = JSON.parse(userData);
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email;
+    document.getElementById("profileCity").textContent = user.city;
+}
+
+/* Load souvenirs */
+function loadSouvenirs() {
+    fetch("http://localhost:5000/souvenirs")
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to load souvenirs");
+            return res.json();
+        })
+        .then(data => {
+            const container = document.getElementById("souvenirContainer");
+            container.innerHTML = "";
+
+            data.forEach(item => {
+                const card = document.createElement("div");
+                card.classList.add("souvenir-card-large");
+
+                card.innerHTML = `
+                    <h3 class="clickable">${item.name}</h3>
+                    <div class="rating">⭐ ${item.rating || "4.0"}</div>
+                    <p>${item.description}</p>
+
+                    <div class="souvenir-meta">
+                        <span><i class="fa-solid fa-location-dot"></i> ${item.place_name}</span>
+                        <span><i class="fa-solid fa-store"></i> ${item.shop_name || "Local Shop"}</span>
+                    </div>
+
+                    <div class="review-section" id="reviews-souvenir-${item.souvenir_id}">
+                        <p>Loading reviews...</p>
+                    </div>
+                `;
+
+                card.querySelector(".clickable").onclick = () => {
+                    window.location.href = "place.html?id=" + item.place_id;
+                };
+
+                container.appendChild(card);
+
+                loadReviews("souvenir", item.souvenir_id, `reviews-souvenir-${item.souvenir_id}`);
+            });
+        })
+        .catch(() => {
+            document.getElementById("souvenirContainer").innerHTML =
+                "<p>Error loading souvenirs</p>";
+        });
+}
+document.addEventListener("DOMContentLoaded", () => {
+    loadProfile();
+    loadSouvenirs();
+});
+function goToAddItem(type) {
+    window.location.href = "add-item.html?type=" + type;
+}
+function loadReviews(entityType, entityId, containerId) {
+    fetch(`http://localhost:5000/reviews?entity_type=${entityType}&entity_id=${entityId}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Failed to fetch reviews");
+            return res.json();
+        })
+        .then(data => {
+            const container = document.getElementById(containerId);
+
+            if (!data.length) {
+                container.innerHTML = "<p class='no-review'>No reviews yet</p>";
+                return;
+            }
+
+            container.innerHTML = "";
+
+            data.forEach(r => {
+                const div = document.createElement("div");
+                div.classList.add("review-card");
+
+                div.innerHTML = `
+                    <div class="review-rating">⭐ ${r.rating || "-"}</div>
+                    <div class="review-text">${r.review_text}</div>
+                    <div class="review-date">
+                        ${new Date(r.created_at).toLocaleDateString()}
+                    </div>
+                `;
+
+                container.appendChild(div);
+            });
+        })
+        .catch(() => {
+            document.getElementById(containerId).innerHTML =
+                "<p class='error'>Error loading reviews</p>";
+        });
+}
+</script>
+
+</body>
+</html>

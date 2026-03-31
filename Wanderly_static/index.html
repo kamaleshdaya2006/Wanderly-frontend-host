@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html>
+<title> Wanderly</title>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="homepage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="home-bg chennai-bg">
+
+    <div class="home-container" onclick="goToHome()">
+        <i class="fa-solid fa-house home-icon"></i>
+        <span class="home-text">Back to Home</span>
+    </div>
+
+    <div class="profile-container" onmouseover="openProfile()">
+        <i class="fa-solid fa-circle-user profile-icon"></i>
+        <span class="profile-text">View Profile</span>
+    </div>
+
+    <div class="title-block">
+        <h1 class="title-text">Wanderly</h1>
+        <div class="subtitle">
+            <span class="line"></span>
+            <span class="subtitle-text">TRAVEL FREE</span>
+            <span class="line"></span>
+        </div>
+    </div>
+    <div class="middle-hero-section">
+
+        <div class="weather-info-card">
+            <div class="weather-header">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Current City: <strong>Chennai</strong></span>
+            </div>
+            <div class="weather-grid">
+                <div class="weather-item">
+                    <i class="fa-solid fa-temperature-half temp-icon"></i>
+                    <span class="label">Temperature</span>
+                    <span class="value">27°C</span>
+                </div>
+                <div class="weather-item">
+                    <i class="fa-solid fa-droplet humid-icon"></i>
+                    <span class="label">Humidity</span>
+                    <span class="value">70%</span>
+                </div>
+                <div class="weather-item">
+                    <i class="fa-solid fa-cloud-showers-heavy rain-icon"></i>
+                    <span class="label">Forecast</span>
+                    <span class="value">Moderate Rain</span>
+                </div>
+                <div class="weather-item">
+                    <i class="fa-solid fa-lightbulb tip-icon"></i>
+                    <span class="label">Travel Tip</span>
+                    <span class="value">Visit Beach Lighthouse</span>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="city-selector-container">
+            <div class="city-selector-box">
+                <i class="fa-solid fa-magnifying-glass-location search-icon"></i>
+                <div class="select-wrapper">
+                    <label for="destinations">Where are you currently?</label>
+                    <select onchange="location = this.value;">
+                        <option value="index.html">Chennai, Tamil Nadu</option>
+                        <option value="mumbai.html">Mumbai, Maharashtra</option>
+                        <option value="kolkata.html">Kolkata, West Bengal</option>
+                        <option value="delhi.html">Delhi, NCR</option>
+                    </select>
+
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+        </div>
+
+        <br>
+    </div>
+    <hr>
+    <section class="infoblock">
+        <h3 class="infotext">Top Places to Visit in Chennai</h3>
+    </section>
+    <div class="container">
+        <div class="box">
+            <h4><i class="fa-solid fa-umbrella-beach place-icon"></i>Marina Beach</h4>
+            <img src="marina.jpg" alt="Marina Beach">
+            <a href="https://www.tripadvisor.in/Attraction_Review-g304556-d321279-Reviews-Marina_Beach-Chennai_Madras_Chennai_District_Tamil_Nadu.html"
+                target="_blank">
+                View Details →
+            </a>
+        </div>
+
+        <div class="box">
+            <h4><i class="fa-solid fa-paw place-icon"></i>Vandalur Zoo</h4>
+            <img src="vandalurzoo.jpg" alt="Vandalur Zoo">
+            <a href="https://aazp.in/" target="_blank">
+                Visit Official Site →
+            </a>
+        </div>
+
+        <div class="box">
+            <h4><i class="fa-solid fa-tree place-icon"></i> Guindy National Park</h4>
+            <img src="gnp.jpg" alt="Guindy National Park">
+            <a href="https://wlwchennai.tn.gov.in/" target="_blank">
+                Explore Park →
+            </a>
+        </div>
+    </div>
+
+    <div class="side-by-side-container">
+
+        <div class="info-card">
+            <h3>Activities to Do</h3>
+            <ul>
+                <li>Sunrise at Marina</li>
+                <li>Visit Guindy Park</li>
+                <li>Temple Tour</li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h3>Food to Explore</h3>
+            <ul>
+                <li>Filter Coffee</li>
+                <li>Masala Dosa</li>
+                <li>Marina Fish Fry</li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h3>Things to Buy</h3>
+            <ul>
+                <li>Kanchipuram Silk</li>
+                <li>Temple Jewellery</li>
+                <li>T. Nagar Handloom</li>
+            </ul>
+        </div>
+
+    </div>
+    <section class="exploreblock">
+        <div class="explore-content">
+            <i class="fa-solid fa-compass explore-icon"></i>
+            <h2>Explore Chennai</h2>
+            <p>Discover places, food, culture and hidden local gems</p>
+            <button class="explore-btn" onclick="goToChennai()">Start Exploring</button>
+        </div>
+    </section>
+    <div class="profile-overlay" id="profileOverlay"></div>
+
+    <div class="profile-panel" id="profilePanel">
+        <div class="profile-header">
+            <h2>My Profile</h2>
+            <i class="fa-solid fa-xmark close-btn" onclick="closeProfile()"></i>
+        </div>
+
+        <div class="profile-body">
+            <h3 id="profileName">User Name</h3>
+            <p>Wanderly User</p>
+
+            <div class="profile-info">
+                <div><strong>Email:</strong> <span id="profileEmail"></span></div>
+                <div><strong>City:</strong> <span id="profileCity"></span></div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="profile-btn trip-btn" onclick="goToTrips()">
+                    <i class="fa-solid fa-route"></i>
+                    Plan a Trip
+                </button>
+
+                <button class="profile-btn logout-btn" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+    <script>
+        function openProfile() {
+            document.getElementById("profilePanel").classList.add("active");
+            document.getElementById("profileOverlay").classList.add("active");
+        }
+
+        function closeProfile() {
+            document.getElementById("profilePanel").classList.remove("active");
+            document.getElementById("profileOverlay").classList.remove("active");
+        }
+
+        function goToHome() {
+            window.location.href = "index.html";
+        }
+
+        function goToChennai() {
+            window.location.href = "chennaimain.html";
+        }
+
+        function goToTrips() {
+            window.location.href = "trips.html";
+        }
+
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "Signin.html";
+        }
+
+        // Load user info into profile
+        document.addEventListener("DOMContentLoaded", function () {
+            const userData = localStorage.getItem("user");
+
+            if (!userData) {
+                // if not logged in, redirect to signup
+                window.location.href = "signup.html";
+                return;
+            }
+
+            const user = JSON.parse(userData);
+
+            document.getElementById("profileName").textContent = user.name;
+            document.getElementById("profileEmail").textContent = user.email || "N/A";
+            document.getElementById("profileCity").textContent = user.city || "N/A";
+        });
+
+
+    </script>
+
+    <footer class="about-section">
+        <div class="about-content">
+            <h2>About Wanderly</h2>
+            <p>Your ultimate companion for hassle-free travel planning. Discover local gems, weather updates, and
+                top-rated attractions across Chennai.</p>
+
+            <div class="contact-icons">
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>contact@wanderly.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>+91 98765 43210</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Chennai, India</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Wanderly - Travel Free
+        </div>
+    </footer>
+</body>
+
+</html>

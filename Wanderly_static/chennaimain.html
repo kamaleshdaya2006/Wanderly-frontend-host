@@ -1,0 +1,620 @@
+<!DOCTYPE HTML>
+<html>
+<title> Chennai main page</title>
+<head> 
+<link rel="stylesheet" type="text/css" href="chennaimain.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="home-bg">
+<div class="home-container" onclick="goToHome()">
+    <i class="fa-solid fa-house home-icon"></i>
+    <span class="home-text">Back to Home</span>
+</div>
+<div class="profile-container" onmouseover="openProfile()"
+>
+    <i class="fa-solid fa-circle-user profile-icon"></i>
+    <span class="profile-text">View Profile</span>
+</div>
+
+<div class="profile-overlay" id="profileOverlay"></div>
+
+<div class="profile-panel" id="profilePanel">
+    <div class="profile-header">
+        <h2>My Profile</h2>
+        <i class="fa-solid fa-xmark close-btn" onclick="closeProfile()"></i>
+    </div>
+
+    <div class="profile-body">
+        <h3 id="profileName">User Name</h3>
+        <p>Wanderly User</p>
+
+        <div class="profile-info">
+            <div><strong>Email:</strong> <span id="profileEmail"></span></div>
+            <div><strong>City:</strong> <span id="profileCity"></span></div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="profile-btn trip-btn" onclick="goToTrips()">
+                <i class="fa-solid fa-route"></i>
+                Plan a Trip
+            </button>
+
+            <button class="profile-btn logout-btn" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="title-block">
+    <h1 class="title-text">Vanakam Chennai</h1>
+    <div class="subtitle">
+        <span class="line"></span>
+        <span class="subtitle-text">Ithu namma ooru</span>
+        <span class="line"></span>
+    </div><br>
+    <!-- Floating Add Place Button -->
+<div class="add-place-container">
+    <button class="add-place-btn" onclick="goToAddItem('place')">
+        <i class="fa-solid fa-plus"></i>
+        Add a Place
+    </button>
+</div>
+</div> 
+<div class="review-btn-container">
+    <button class="review-btn" onclick="openReviewModal()">
+        <i class="fa-solid fa-star"></i>
+        Write a Review
+    </button>
+</div>
+<section class="chennai-intro">
+<div class="weather-float" onclick="openWeather()">
+    <i class="fa-solid fa-cloud-sun"></i>
+</div>
+
+<div class="weather-popup" id="weatherPopup">
+    <div class="weather-header">
+        <span>Chennai Weather</span>
+        <i class="fa-solid fa-xmark" onclick="closeWeather()"></i>
+    </div>
+
+    <div class="weather-details">
+        <div class="weather-item">
+            <i class="fa-solid fa-temperature-half"></i>
+            <span>Temperature</span>
+            <strong>30°C</strong>
+        </div>
+
+        <div class="weather-item">
+            <i class="fa-solid fa-droplet"></i>
+            <span>Humidity</span>
+            <strong>72%</strong>
+        </div>
+
+        <div class="weather-item">
+            <i class="fa-solid fa-cloud-showers-heavy"></i>
+            <span>Rain Chance</span>
+            <strong>40%</strong>
+        </div>
+
+        <div class="weather-item">
+            <i class="fa-solid fa-wind"></i>
+            <span>Wind</span>
+            <strong>18 km/h</strong>
+        </div>
+    </div>
+</div>
+
+    <div class="intro-content">
+       <div class="intro-text">
+    <h2>🌆 Welcome to Chennai</h2>
+
+    <p class="intro-highlight">
+        The cultural capital of South India, where tradition meets the sea.
+    </p>
+
+    <p>
+        Chennai is a vibrant coastal city known for its rich heritage,
+        classical music 🎶, ancient temples 🛕, and lively beaches 🌊.
+        From the iconic Marina Beach to centuries-old streets filled
+        with local flavors, the city blends tradition with modern life.
+    </p>
+
+    <p>
+        Whether you're hunting for hidden gems 🧭, tasting authentic
+        South Indian cuisine 🍛, or experiencing colorful festivals 🎉,
+        Chennai offers a warm and unforgettable travel experience.
+    </p>
+</div>
+
+
+        <div class="intro-image">
+            <img src="chennaiview.jpg" alt="Chennai city view">
+        </div>
+    </div>
+</section>
+
+<section class="top-places-section">
+    <h2 class="section-title">Top Places to Visit in Chennai</h2>
+
+   <div class="places-scroll" id="placesContainer">
+    <!-- dynamic place cards will appear here -->
+</div>
+
+
+</section>
+<section class="hidden-gem-nav">
+    <div class="gem-card" onclick="goToHiddenGems()">
+        <div class="gem-content">
+            <h2>💎 Discover Hidden Gems</h2>
+            <p>
+                Step off the tourist trail and uncover Chennai’s
+                secret spots, local favorites, and authentic experiences.
+            </p>
+            <span class="gem-button">Explore Hidden Gems →</span>
+        </div>
+    </div>
+</section>
+<section class="guide-section">
+    <div class="guide-header">
+        <h2>🤝 Hire a Local Guide</h2>
+        <p>Travel like a local with experienced Chennai guides</p>
+    </div>
+
+  <div class="guide-cards" id="guidesContainer">
+    <!-- Guides will load dynamically -->
+</div>
+
+    <div class="guide-footer">
+        <button class="guide-btn" onclick="goToGuides()">View All Guides</button>
+    </div>
+</section>
+<section class="search-section">
+    <div class="search-box" onclick="openSearch()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search for places in Chennai..." readonly>
+    </div>
+</section>
+<section class="explore-dual-section">
+
+    <div class="dual-card food-card" onclick="goToFood()">
+        <div class="dual-content">
+            <i class="fa-solid fa-utensils dual-icon"></i>
+            <h3>Explore Street Food</h3>
+            <p>
+                Taste Chennai’s iconic street snacks, seaside fish fry,
+                and authentic local flavors loved by the city.
+            </p>
+            <span class="dual-btn">Discover Food →</span>
+        </div>
+    </div>
+
+    <div class="dual-card souvenir-card" onclick="goToSouvenirs()">
+        <div class="dual-content">
+            <i class="fa-solid fa-gift dual-icon"></i>
+            <h3>Explore Souvenirs</h3>
+            <p>
+                Take home traditional silk, temple jewellery,
+                and handcrafted treasures from Chennai’s markets.
+            </p>
+            <span class="dual-btn">Find Souvenirs →</span>
+        </div>
+    </div>
+
+</section>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay" onclick="closeSearch()"></div>
+
+<div class="search-panel" id="searchPanel">
+    <div class="search-input-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search beaches, temples, food..." 
+            onkeyup="showSuggestions()"
+        >
+        <i class="fa-solid fa-xmark close-search" onclick="closeSearch()"></i>
+    </div>
+
+    <div class="suggestions" id="suggestions">
+        <!-- Suggestions appear here -->
+    </div>
+</div>
+<section class="local-tips-section">
+    <div class="tips-container">
+
+        <div class="tip-card">
+            <h3>👕 What to Wear</h3>
+            <ul>
+                <li>Light cotton clothes for the humid weather</li>
+                <li>Comfortable walking shoes</li>
+                <li>Carry sunglasses and sunscreen</li>
+            </ul>
+        </div>
+
+        <div class="tip-card">
+            <h3>📍 Local Travel Tips</h3>
+            <ul>
+                <li>Use Metro for fast city travel</li>
+                <li>Try early morning beach visits</li>
+                <li>Carry cash for small street vendors</li>
+            </ul>
+        </div>
+
+        <div class="tip-card">
+            <h3>🎉 Upcoming Events</h3>
+            <ul>
+                <li>Chennai Music Season (Dec–Jan)</li>
+                <li>Local temple festivals</li>
+                <li>Weekend beach markets</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+<div class="modal-overlay" id="reviewOverlay"></div>
+
+<div class="review-modal" id="reviewModal">
+    <h2>Write a Review</h2>
+
+    <select id="reviewType" onchange="loadReviewOptions(this.value)">
+        <option value="place">Place</option>
+        <option value="food">Food</option>
+        <option value="souvenir">Souvenir</option>
+        <option value="guide">Guide</option>
+    </select>
+
+    <select id="reviewSelect">
+    <option value="">Select Item</option>
+</select>
+
+    <input type="number" id="reviewRating" min="1" max="5" placeholder="Rating (1-5)">
+
+    <textarea id="reviewText" placeholder="Write your review..."></textarea>
+
+    <button onclick="submitReview()">Submit</button>
+    <button onclick="closeReviewModal()">Cancel</button>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <h2>Wanderly</h2>
+        <p>Your local companion for exploring Chennai like a true traveler.</p>
+
+        <div class="footer-contact">
+            <span><i class="fa-solid fa-envelope"></i> contact@wanderly.com</span>
+            <span><i class="fa-solid fa-phone"></i> +91 98765 43210</span>
+            <span><i class="fa-solid fa-location-dot"></i> Chennai, India</span>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Wanderly. Travel Free.
+    </div>
+</footer>
+
+<script>
+
+function goToHome() {
+    window.location.href = "homepage.html";
+}
+
+function goToHiddenGems() {
+    window.location.href = "hidden-gems.html";
+}
+
+function goToGuides() {
+    window.location.href = "guides.html";
+}
+
+function openSearch() {
+    document.getElementById("searchPanel").classList.add("active");
+    document.getElementById("searchOverlay").classList.add("active");
+    document.getElementById("searchInput").focus();
+}
+
+function closeSearch() {
+    document.getElementById("searchPanel").classList.remove("active");
+    document.getElementById("searchOverlay").classList.remove("active");
+}
+
+
+
+let allPlaces = [];
+
+// Load all places once
+function loadAllPlaces() {
+    fetch("http://localhost:5000/places")
+        .then(res => res.json())
+        .then(data => {
+            allPlaces = data;
+        })
+        .catch(err => console.error("Error loading places:", err));
+}
+
+function showSuggestions() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const suggestionsBox = document.getElementById("suggestions");
+
+    suggestionsBox.innerHTML = "";
+
+    if (input === "") return;
+
+    const filtered = allPlaces.filter(place =>
+        place.name.toLowerCase().includes(input)
+    );
+
+    filtered.forEach(place => {
+        const div = document.createElement("div");
+        div.classList.add("suggestion-item");
+        div.textContent = place.name;
+
+        div.onclick = function() {
+            window.location.href = "place.html?id=" + place.place_id;
+        };
+
+        suggestionsBox.appendChild(div);
+    });
+}
+
+
+function openWeather() {
+    document.getElementById("weatherPopup").classList.toggle("active");
+}
+
+function closeWeather() {
+    document.getElementById("weatherPopup").classList.remove("active");
+}
+
+function goToFood() {
+    window.location.href = "street-food.html";
+}
+
+function goToSouvenirs() {
+    window.location.href = "souvenirs.html";
+}
+
+function goToMarina() { window.location.href = "marina.html"; }
+function goToKapaleeshwarar() { window.location.href = "kapaleeshwarar.html"; }
+function goToFort() { window.location.href = "fort.html"; }
+function goToBesant() { window.location.href = "besant.html"; }
+function goToZoo() { window.location.href = "vandalurzoo.html"; }
+function goToGuindy() { window.location.href = "guindy.html"; }
+function goToSanthome() { window.location.href = "santhome.html"; }
+function goToTheosophical() { window.location.href = "theosophical.html"; }
+function goToMuseum() { window.location.href = "museum.html"; }
+function loadTopPlaces() {
+    fetch("http://localhost:5000/places?category=top")
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("placesContainer");
+            container.innerHTML = "";
+
+            if (data.length === 0) {
+                container.innerHTML = "<p>No places found.</p>";
+                return;
+            }
+
+            data.forEach(place => {
+                const card = document.createElement("div");
+                card.classList.add("place-card");
+
+                card.innerHTML = `
+                    <img src="${place.image}" alt="${place.name}">
+                    <h4>${place.name}</h4>
+                `;
+
+                // IMPORTANT: pass place_id to place.html
+                card.onclick = function() {
+                    window.location.href = "place.html?id=" + place.place_id;
+                };
+
+                container.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error("Error loading places:", error);
+        });
+}
+
+
+function loadGuides() {
+    fetch("http://localhost:5000/guides")
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("guidesContainer");
+            container.innerHTML = "";
+
+            if (data.length === 0) {
+                container.innerHTML = "<p>No guides available.</p>";
+                return;
+            }
+
+            data.forEach(guide => {
+                const card = document.createElement("div");
+                card.classList.add("guide-card");
+
+                const languages = guide.languages
+                    .split(",")
+                    .map(lang => `<span>${lang}</span>`)
+                    .join("");
+
+                card.innerHTML = `
+                    <img src="${guide.image}" alt="Guide">
+                    <h3>${guide.name}</h3>
+                    <div class="rating">
+                        ⭐ ${guide.rating}
+                    </div>
+                    <p class="guide-desc">
+                        ${guide.description}
+                    </p>
+                    <div class="guide-tags">
+                        ${languages}
+                    </div>
+                    <p class="price">₹${guide.price} / day</p>
+                `;
+
+                container.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error("Error loading guides:", error);
+            document.getElementById("guidesContainer").innerHTML =
+                "<p>Failed to load guides.</p>";
+        });
+}
+
+function openProfile() {
+    document.getElementById("profilePanel").classList.add("active");
+    document.getElementById("profileOverlay").classList.add("active");
+}
+
+function closeProfile() {
+    document.getElementById("profilePanel").classList.remove("active");
+    document.getElementById("profileOverlay").classList.remove("active");
+}
+
+function goToHome() {
+    window.location.href = "homepage.html";
+}
+
+function goToChennai() {
+    window.location.href = "chennaimain.html";
+}
+
+function goToTrips() {
+    window.location.href = "trips.html";
+}
+
+function logout() {
+    localStorage.removeItem("user");
+    window.location.href = "signin.html";
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const userData = localStorage.getItem("user");
+
+    if (!userData) {
+        window.location.href = "signin.html";
+        return;
+    }
+
+    const user = JSON.parse(userData);
+
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email || "N/A";
+    document.getElementById("profileCity").textContent = user.city || "N/A";
+
+    loadTopPlaces();
+    loadGuides();
+    loadAllPlaces();   // ← important
+});
+
+function goToAddItem(type) {
+    window.location.href = "add-item.html?type=" + type;
+}
+function openReviewModal() {
+    document.getElementById("reviewModal").classList.add("active");
+    document.getElementById("reviewOverlay").classList.add("active");
+}
+
+function closeReviewModal() {
+    document.getElementById("reviewModal").classList.remove("active");
+    document.getElementById("reviewOverlay").classList.remove("active");
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const overlay = document.getElementById("reviewOverlay");
+
+    if (overlay) {
+        overlay.addEventListener("click", closeReviewModal);
+    }
+});
+
+function submitReview() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user) {
+        alert("Login required");
+        return;
+    }
+
+    const type = document.getElementById("reviewType").value;
+    const entityId = document.getElementById("reviewSelect").value;
+    const rating = document.getElementById("reviewRating").value;
+    const text = document.getElementById("reviewText").value;
+
+    if (!entityId || !rating || !text) {
+        alert("Fill all fields");
+        return;
+    }
+
+   fetch("http://localhost:5000/reviews", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+        user_id: user.user_id,
+        entity_type: type,
+        entity_id: entityId,
+        rating: rating,
+        review_text: text
+    })
+})
+.then(res => res.json().then(data => ({status: res.status, body: data})))
+.then(res => {
+    if (res.status === 200) {
+        alert("Review submitted!");
+        closeReviewModal();
+    } else {
+        alert(res.body.error || "Failed");
+    }
+})
+.catch(err => {
+    console.error(err);
+    alert("Error");
+});
+}
+let reviewMap = {}; // maps name -> id
+
+function loadReviewOptions(type) {
+    const select = document.getElementById("reviewSelect");
+    select.innerHTML = "<option value=''>Select Item</option>";
+
+    let url = "";
+
+    if (type === "place") url = "http://localhost:5000/places";
+    if (type === "food") url = "http://localhost:5000/foods";
+    if (type === "souvenir") url = "http://localhost:5000/souvenirs";
+    if (type === "guide") url = "http://localhost:5000/guides";
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(item => {
+            const option = document.createElement("option");
+
+            // handle different naming
+            const name = item.name || item.shop_name;
+            const id =
+                item.place_id ||
+                item.food_id ||
+                item.souvenir_id ||
+                item.guide_id;
+
+            option.value = id;
+            option.textContent = name;
+
+            select.appendChild(option);
+        });
+    });
+}
+document.addEventListener("DOMContentLoaded", () => {
+    loadReviewOptions("place"); // default load
+});
+</script>
+
+</body>
+</html>
